@@ -247,13 +247,15 @@
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <DatePicker layoutX="69.0" layoutY="30.0" />
-                                          <Label layoutX="28.0" layoutY="33.0" text="Date">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TextArea layoutX="28.0" layoutY="89.0" prefHeight="286.0" prefWidth="683.0" />
+                                          <TableView fx:id="TableStatisticsPopular" layoutX="28.0" layoutY="94.0" prefHeight="200.0" prefWidth="681.0">
+                                            <columns>
+                                              <TableColumn fx:id="TableStatisticsPopularTime" prefWidth="141.0" text="Time" />
+                                              <TableColumn fx:id="TableStatisticsPopularPick" prefWidth="227.0" text="Pick-up" />
+                                                <TableColumn fx:id="TableStatisticsPopularDestination" prefWidth="216.0" text="Destination" />
+                                                <TableColumn fx:id="TableStatisticsPopularPlace" prefWidth="96.0" text="Place" />
+                                            </columns>
+                                          </TableView>
+                                          <Button fx:id="UpdateButtonStatisticsPopular" layoutX="50.0" layoutY="27.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
                                        </children>
                                     </AnchorPane>
                                  </content>
