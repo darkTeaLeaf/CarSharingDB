@@ -222,11 +222,11 @@
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker layoutX="81.0" layoutY="20.0" />
-                                          <TableView layoutX="33.0" layoutY="74.0" prefHeight="242.0" prefWidth="465.0">
+                                          <DatePicker fx:id="StatisticsDateLocations" layoutX="81.0" layoutY="20.0" />
+                                          <TableView fx:id="TableStatisticsLocation" layoutX="33.0" layoutY="74.0" prefHeight="242.0" prefWidth="465.0">
                                             <columns>
-                                              <TableColumn prefWidth="231.0" text="Username" />
-                                              <TableColumn prefWidth="233.0" text="Amount" />
+                                              <TableColumn fx:id="TableStatisticsLocationUsername" prefWidth="231.0" text="Username" />
+                                              <TableColumn fx:id="TableStatisticsLocationAmount" prefWidth="233.0" text="Amount" />
                                             </columns>
                                           </TableView>
                                        </children></AnchorPane>
