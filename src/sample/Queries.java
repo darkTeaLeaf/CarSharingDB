@@ -153,33 +153,17 @@ public class Queries {
 
         try {
 
-            //создаём временную таблицу со значениями времени
-            String creating_query = String.format("CREATE TEMPORARY TABLE \'time_intervals\'(" +
-                            "\'interval\' STRING NOT NULL" +
-                            "\'start_time\' DATE" +
-                            "\'end_time\' DATE" +
-                            "PRIMARY KEY (\'interval\')" +
-                            ")ENGINE=InnoDB DEFAULT CHARSET=utf8;" +
-                            "" +
-                            "" +
-                            "INSERT INTO \'time_intervals\' VALUES (\'morning\', %s, %s)" +
-                            "INSERT INTO \'time_intervals\' VALUES (\'afternoon\', %s, %s)" +
-                            "INSERT INTO \'time_intervals\' VALUES (\'evening\', %s, %s)",
-                    time[0][0], time[0][1], time[1][0], time[1][1], time[2][0], time[2][1]);
-
-            stmt.executeQuery(creating_query);
-
             String fromto[] = {"from_p", "to_p"};
 
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String query_from = String.format("SELECT \'%s\', COUNT(*) as number FROM rent WHERE " +
+                    String query_from = String.format("SELECT %s, COUNT(*) as number FROM rent WHERE " +
                                     "(TIME(time_start) >= TIME(%s) AND TIME(time_start) <= TIME(%s)) OR " +
-                                    "(TIME(time_finish) >= TIME(%s) AND TIME(time_finish) <= TIME(%s) ORDER BY number DESC",
+                                    "(TIME(time_finish) >= TIME(%s) AND TIME(time_finish) <= TIME(%s)) ORDER BY number DESC",
                             fromto[i], time[j][0], time[j][1], time[j][0], time[j][1]);
 
                     ResultSet rs = stmt.executeQuery(query_from);
-
+                    rs.next();
                     for(int k = 0; k < 3; k++){
                         top_places[i][j][k] = rs.getString(fromto[i]);
                     }
