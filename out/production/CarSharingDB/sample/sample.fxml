@@ -38,22 +38,15 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="406.0" prefWidth="757.0">
                                        <children>
-                                          <TextField layoutX="146.0" layoutY="33.0" />
+                                          <TextField fx:id="UsernameCustomer" layoutX="146.0" layoutY="33.0" />
                                           <Label layoutX="63.0" layoutY="34.0" prefHeight="23.0" prefWidth="83.0" text="Username">
                                              <font>
                                                 <Font size="16.0" />
                                              </font></Label>
-                                          <DatePicker layoutX="398.0" layoutY="33.0" />
-                                          <Label layoutX="349.0" layoutY="35.0" prefHeight="24.0" prefWidth="97.0" text="From">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
                                           <TableView layoutX="22.0" layoutY="93.0" prefHeight="341.0" prefWidth="691.0">
                                             <columns>
-                                              <TableColumn prefWidth="178.0" text="Username" />
-                                              <TableColumn minWidth="2.0" prefWidth="224.0" text="Date" />
-                                                <TableColumn minWidth="2.0" prefWidth="288.0" text="Payment" />
+                                              <TableColumn prefWidth="310.0" text="Username" />
+                                                <TableColumn minWidth="2.0" prefWidth="380.0" text="Number of payments" />
                                             </columns>
                                           </TableView>
                                        </children></AnchorPane>
@@ -160,18 +153,24 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <DatePicker layoutX="69.0" layoutY="27.0" prefHeight="32.0" prefWidth="219.0" />
+                                          <DatePicker fx:id="DateStation" layoutX="69.0" layoutY="27.0" prefHeight="32.0" prefWidth="219.0" />
                                           <Label layoutX="29.0" layoutY="29.0" prefHeight="28.0" prefWidth="80.0" text="Date">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <TableView layoutX="29.0" layoutY="94.0" prefHeight="340.0" prefWidth="679.0">
+                                          <TableView fx:id="TableStation" layoutX="29.0" layoutY="94.0" prefHeight="340.0" prefWidth="679.0">
                                             <columns>
-                                              <TableColumn prefWidth="330.0" text="Time" />
-                                              <TableColumn minWidth="0.0" prefWidth="348.0" text="Amount" />
+                                              <TableColumn fx:id="TableStationTime" prefWidth="330.0" text="Time" />
+                                              <TableColumn fx:id="TableStationAmount" minWidth="0.0" prefWidth="348.0" text="Amount" />
                                             </columns>
                                           </TableView>
+                                          <TextField fx:id="IDStation" layoutX="456.0" layoutY="28.0" />
+                                          <Label layoutX="376.0" layoutY="33.0" text="Station ID">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </AnchorPane>
                               </content>
