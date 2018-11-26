@@ -9,7 +9,7 @@ public class Queries {
 
     // JDBC URL, username and password of MySQL server
     private static final String user = "root";
-    private static final String password = "root";
+    private static final String password = "enaca2225";
 
     private static Connection con;
     private static Statement stmt;

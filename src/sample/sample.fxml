@@ -81,7 +81,7 @@
                                           <TextField fx:id="Color" layoutX="162.0" layoutY="59.0" />
                                           <TableView fx:id="CarParameterTable" layoutX="28.0" layoutY="114.0" prefHeight="295.0" prefWidth="684.0">
                                             <columns>
-                                              <TableColumn prefWidth="683.0" text="Registration plate" />
+                                              <TableColumn fx:id="TableCarParameterPlate" prefWidth="683.0" text="Registration plate" />
                                             </columns>
                                           </TableView>
                                           <TextField fx:id="UsernameCarParameter" layoutX="491.0" layoutY="21.0" prefHeight="31.0" prefWidth="217.0" />
@@ -165,8 +165,13 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <Button layoutX="51.0" layoutY="25.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
-                                          <TextArea layoutX="29.0" layoutY="85.0" prefHeight="276.0" prefWidth="680.0" />
+                                          <Button fx:id="UpdateButtonWorkshop" layoutX="51.0" layoutY="25.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
+                                          <TableView fx:id="TableWorkshop" layoutX="32.0" layoutY="97.0" prefHeight="296.0" prefWidth="410.0">
+                                            <columns>
+                                              <TableColumn fx:id="TableWorkshopId" prefWidth="200.0" text="Workshop ID" />
+                                              <TableColumn fx:id="TableWorshopPart" prefWidth="209.0" text="Car Part" />
+                                            </columns>
+                                          </TableView>
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -254,16 +259,12 @@
                                        </children></AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" layoutX="10.0" layoutY="103.0" text="Types of cars with highest average cost of repairs and charging ">
+                              <TitledPane animated="false" layoutX="10.0" layoutY="103.0" text="Type of cars with highest average cost of repairs and charging ">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <Button layoutX="54.0" layoutY="28.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
-                                          <TableView layoutX="26.0" layoutY="84.0" prefHeight="200.0" prefWidth="341.0">
-                                            <columns>
-                                              <TableColumn prefWidth="339.0" text="Type of car" />
-                                            </columns>
-                                          </TableView>
+                                          <Button fx:id="UpdateButtonStatisticsType" layoutX="54.0" layoutY="28.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
+                                          <TextArea fx:id="TextTypeStatistics" layoutX="40.0" layoutY="93.0" prefHeight="200.0" prefWidth="663.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>

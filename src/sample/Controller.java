@@ -15,15 +15,17 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Controller {
 
 
     public TextField RegPlate;
     public TextField Color;
-    public TableView<String> CarParameterTable;
+    public TableView<CarParameter> CarParameterTable;
     public TextField UsernameCarParameter;
     public DatePicker DateCarParameter;
+    public TableColumn TableCarParameterPlate;
 
     public DatePicker DateStation;
     public TextField IDStation;
@@ -58,10 +60,18 @@ public class Controller {
     public Button UpdateButtonCarAmount;
     public TableColumn TableCarAmountId;
 
+    public Button UpdateButtonStatisticsType;
+    public TextArea TextTypeStatistics;
+
+    public Button UpdateButtonWorkshop;
+    public TableView TableWorkshop;
+    public TableColumn TableWorkshopId;
+    public TableColumn TableWorshopPart;
+
     public void initialize(){
         //First query
 
-        Queries query = new Queries("jdbc:mysql://localhost:3306/test"); //TODO
+        Queries query = new Queries("jdbc:mysql://localhost:3306/test");
 
         RegPlate.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -130,6 +140,17 @@ public class Controller {
             query7(query);
         });
 
+        //Ninth query
+        UpdateButtonWorkshop.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            query9(query);
+        });
+
+        //Tenth query
+        UpdateButtonStatisticsType.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            TextTypeStatistics.setText("");
+            query10(query);
+        });
+
     }
 
     private void query1(Queries query){
@@ -141,8 +162,14 @@ public class Controller {
         ArrayList<String> rows = query.query1(UsernameCarParameter.getText(), sDate,
                 Color.getText(), RegPlate.getText());
 
-        ObservableList<String> data = FXCollections.observableArrayList();
-        data.addAll(rows);
+        ObservableList<CarParameter> data = FXCollections.observableArrayList();
+
+        for (int i = 0; i < rows.size(); i++) {
+            data.add(new CarParameter(rows.get(i)));
+        }
+
+        TableCarParameterPlate.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         CarParameterTable.setItems(data);
 
         RegPlate.setText("");
@@ -259,7 +286,6 @@ public class Controller {
 
     private void query7(Queries query){
         ArrayList<Integer> rows = query.query7();
-        System.out.println(rows);
 
         ObservableList<CarAmount> data = FXCollections.observableArrayList();
 
@@ -273,6 +299,42 @@ public class Controller {
     }
 
 
+    private void query9(Queries query){
+        HashMap<Integer,String> rows = query.query9();
+
+        ObservableList<Workshop> data = FXCollections.observableArrayList();
+
+        for(Integer key: rows.keySet()){
+            data.add(new Workshop(key, rows.get(key)));
+        }
+
+        TableWorkshopId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableWorshopPart.setCellValueFactory(new PropertyValueFactory<>("part"));
+
+        TableWorkshop.setItems(data);
+    }
+
+    private void query10(Queries query){
+        String row = query.query10();
+
+        TextTypeStatistics.setText("The most expensive type of car to maintain is " + row);
+    }
+
+    public class CarParameter{
+        private SimpleStringProperty id;
+
+        CarParameter(String id){
+            this.id = new SimpleStringProperty(id);
+        }
+
+        public String getId(){
+            return id.get();
+        }
+
+        public void setId(String id){
+            this.id.set(id);
+        }
+    }
 
     public class StationAmount{
         private SimpleStringProperty time;
@@ -390,7 +452,6 @@ public class Controller {
         public void setAmount(float orderID){
             this.amount.set(orderID);
         }
-
     }
 
     public class StatisticsPopular{
@@ -452,6 +513,32 @@ public class Controller {
 
         public void setId(int id){
             this.id.set(id);
+        }
+    }
+
+    public class Workshop{
+        private SimpleIntegerProperty id;
+        private SimpleStringProperty part;
+
+        Workshop(int id, String part){
+            this.id = new SimpleIntegerProperty(id);
+            this.part = new SimpleStringProperty(part);
+        }
+
+        public int getId(){
+            return id.get();
+        }
+
+        public void setId(int id){
+            this.id.set(id);
+        }
+
+        public String getPart(){
+            return part.get();
+        }
+
+        public void setPart(String part){
+            this.part.set(part);
         }
     }
 
