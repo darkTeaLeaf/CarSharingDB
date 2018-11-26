@@ -82,20 +82,23 @@ public class Queries {
         float busy[][] = new float[7][3];
         String time[][] = {{"07:00:00", "10:00:00"}, {"12:00:00", "14:00:00"}, {"17:00:00", "19:00:00"}};
         try {
-            int totalNumber = stmt.executeQuery(query_cars).getInt("count");
+            ResultSet rs = stmt.executeQuery(query_cars);
+            rs.next();
+            int totalNumber = rs.getInt("count");
 
             for(int i = 0; i < 7; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String query = String.format("SELECT DISTINCT registration_plate FROM rent WHERE " +
+                    String query = String.format("SELECT DISTINCT id_car FROM rent WHERE " +
                                     "DATE(time_start)=DATE(\'%s\') AND ((TIME(time_start) >= TIME(\'%s\') AND " +
                                     "TIME(time_start) <= TIME(\'%s\')) OR (TIME(time_finish) >= TIME(\'%s\') AND " +
                                     "TIME(time_finish) <= TIME(\'%s\')))",
                             Date.valueOf(firstDay.plusDays(i)).toString(), time[j][0], time[j][1], time[j][0], time[j][1]);
-                    busyNumber[i][j] = stmt.executeQuery("SELECT COUNT(*) as count FROM "+ query).getInt("count");
+                    rs = stmt.executeQuery(String.format("SELECT COUNT(*) as count FROM (%s) AS a", query));
+                    rs.next();
+                    busyNumber[i][j] = rs.getInt("count");
                     busy[i][j] = (float)100*busyNumber[i][j]/totalNumber;
                 }
             }
-
 
         } catch (SQLException e) {
             e.printStackTrace();
