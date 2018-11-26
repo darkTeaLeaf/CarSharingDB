@@ -67,6 +67,11 @@ public class Controller {
     public TableView TableWorkshop;
     public TableColumn TableWorkshopId;
     public TableColumn TableWorshopPart;
+    
+    public DatePicker StatisticsDateLocations;
+    public TableView TableStatisticsLocation;
+    public TableColumn TableStatisticsLocationUsername;
+    public TableColumn TableStatisticsLocationAmount;
 
     public void initialize(){
         //First query
@@ -140,6 +145,13 @@ public class Controller {
             query7(query);
         });
 
+        //Eighth query
+        StatisticsDateLocations.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                query8(query);
+            }
+        });
+
         //Ninth query
         UpdateButtonWorkshop.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             query9(query);
@@ -175,6 +187,7 @@ public class Controller {
         RegPlate.setText("");
         UsernameCarParameter.setText("");
         Color.setText("");
+        DateCarParameter.setValue(null);
     }
 
     private void query2(Queries query){
@@ -201,6 +214,7 @@ public class Controller {
         TableStation.setItems(data);
 
         IDStation.setText("");
+        DateStation.setValue(null);
     }
 
     private void query3(Queries query){
@@ -223,13 +237,13 @@ public class Controller {
     }
 
     private void query4(Queries query){
-        //ArrayList<Integer> rows = query.query4(UsernameCustomer.getText());
+        ArrayList<Integer> rows = query.query4(UsernameCustomer.getText());
 
-        ObservableList<StatisticsBusy> data = FXCollections.observableArrayList();
+        ObservableList<Customer> data = FXCollections.observableArrayList();
 
-//        for (int i = 0; i < rows.size(); i++) {
-//            data.add(new Customer(UsernameCustomer.getText(), rows.get(i)));
-//        }
+        for (int i = 0; i < rows.size(); i++) {
+            data.add(new Customer(UsernameCustomer.getText(), rows.get(i)));
+        }
 
         TableUsernameCustomer.setCellValueFactory(new PropertyValueFactory<>("username"));
         TableOrderCustomer.setCellValueFactory(new PropertyValueFactory<>("orderID"));
@@ -256,6 +270,7 @@ public class Controller {
         TableStatisticsAverageAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
         TableStatisticsAverage.setItems(data);
+        StatisticsDateAverage.setValue(null);
     }
 
     private void query6(Queries query){
@@ -296,6 +311,27 @@ public class Controller {
         TableCarAmountId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         TableCarAmount.setItems(data);
+    }
+
+    private void query8(Queries query){
+        LocalDate localDate = StatisticsDateLocations.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        java.util.Date date = Date.from(instant);
+        java.sql.Date sDate = new java.sql.Date(date.getTime());
+
+//        HashMap<String, Integer> rows = query.query8(sDate);
+
+        ObservableList<StatisticsLocation> data = FXCollections.observableArrayList();
+
+//        for(String key: rows.keySet()){
+//            data.add(new StatisticsLocation(rows.get(key), key));
+//        }
+
+        TableStatisticsLocationUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        TableStatisticsLocationAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+        TableStatisticsLocation.setItems(data);
+        StatisticsDateLocations.setValue(null);
     }
 
 
@@ -539,6 +575,32 @@ public class Controller {
 
         public void setPart(String part){
             this.part.set(part);
+        }
+    }
+
+    public class StatisticsLocation{
+        private SimpleIntegerProperty amount;
+        private SimpleStringProperty username;
+
+        StatisticsLocation(int amount, String username){
+            this.amount = new SimpleIntegerProperty(amount);
+            this.username = new SimpleStringProperty(username);
+        }
+
+        public int getAmount(){
+            return amount.get();
+        }
+
+        public void setAmount(int amount){
+            this.amount.set(amount);
+        }
+
+        public String getUsername(){
+            return username.get();
+        }
+
+        public void setUsername(String username){
+            this.username.set(username);
         }
     }
 
