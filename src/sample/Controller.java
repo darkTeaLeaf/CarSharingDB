@@ -54,6 +54,10 @@ public class Controller {
     public TableColumn TableStatisticsPopularPlace;
     public Button UpdateButtonStatisticsPopular;
 
+    public TableView TableCarAmount;
+    public Button UpdateButtonCarAmount;
+    public TableColumn TableCarAmountId;
+
     public void initialize(){
         //First query
 
@@ -119,6 +123,11 @@ public class Controller {
         //Sixth query
         UpdateButtonStatisticsPopular.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             query6(query);
+        });
+
+        //Seventh query
+        UpdateButtonCarAmount.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            query7(query);
         });
 
     }
@@ -246,6 +255,21 @@ public class Controller {
         TableStatisticsPopularDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
 
         TableStatisticsPopular.setItems(data);
+    }
+
+    private void query7(Queries query){
+        ArrayList<Integer> rows = query.query7();
+        System.out.println(rows);
+
+        ObservableList<CarAmount> data = FXCollections.observableArrayList();
+
+        for (int i = 0; i < rows.size(); i++) {
+            data.add(new CarAmount(rows.get(i)));
+        }
+
+        TableCarAmountId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableCarAmount.setItems(data);
     }
 
 
@@ -413,7 +437,22 @@ public class Controller {
         public void setPlace(int place){
             this.place.set(place);
         }
+    }
 
+    class CarAmount{
+        private SimpleIntegerProperty id;
+
+        CarAmount(int id){
+            this.id = new SimpleIntegerProperty(id);
+        }
+
+        public int getId(){
+            return id.get();
+        }
+
+        public void setId(int id){
+            this.id.set(id);
+        }
     }
 
 }
