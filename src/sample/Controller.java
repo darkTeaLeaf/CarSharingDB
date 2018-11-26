@@ -37,6 +37,23 @@ public class Controller {
     public TableColumn TableStatisticsTime;
     public TableColumn TableStatisticsAmount;
 
+    public TextField UsernameCustomer;
+    public TableView TableCustomer;
+    public TableColumn TableUsernameCustomer;
+    public TableColumn TableOrderCustomer;
+
+    public DatePicker StatisticsDateAverage;
+    public TableView TableStatisticsAverage;
+    public TableColumn TableStatisticsAverageName;
+    public TableColumn TableStatisticsAverageAmount;
+
+    public TableView TableStatisticsPopular;
+    public TableColumn TableStatisticsPopularTime;
+    public TableColumn TableStatisticsPopularPick;
+    public TableColumn TableStatisticsPopularDestination;
+    public TableColumn TableStatisticsPopularPlace;
+    public Button UpdateButtonStatisticsPopular;
+
     public void initialize(){
         //First query
 
@@ -86,8 +103,23 @@ public class Controller {
         });
 
         //Forth query
+        UsernameCustomer.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                query4(query);
+            }
+        });
 
+        //Fifth query
+        StatisticsDateAverage.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                query5(query);
+            }
+        });
 
+        //Sixth query
+        UpdateButtonStatisticsPopular.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            query6(query);
+        });
 
     }
 
@@ -154,6 +186,67 @@ public class Controller {
         TableStatisticsBusy.setItems(data);
     }
 
+    private void query4(Queries query){
+        //ArrayList<Integer> rows = query.query4(UsernameCustomer.getText());
+
+        ObservableList<StatisticsBusy> data = FXCollections.observableArrayList();
+
+//        for (int i = 0; i < rows.size(); i++) {
+//            data.add(new Customer(UsernameCustomer.getText(), rows.get(i)));
+//        }
+
+        TableUsernameCustomer.setCellValueFactory(new PropertyValueFactory<>("username"));
+        TableOrderCustomer.setCellValueFactory(new PropertyValueFactory<>("orderID"));
+
+        TableCustomer.setItems(data);
+
+        UsernameCustomer.setText("");
+    }
+
+    private void query5(Queries query){
+        LocalDate localDate = StatisticsDateAverage.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        java.util.Date date = Date.from(instant);
+        java.sql.Date sDate = new java.sql.Date(date.getTime());
+
+        float[] rows = query.query5(sDate);
+
+        ObservableList<StaristicsAverage> data = FXCollections.observableArrayList();
+
+        data.add(new StaristicsAverage("Average distance", rows[0]));
+        data.add(new StaristicsAverage("Average trip duration", rows[1]));
+
+        TableStatisticsAverageName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableStatisticsAverageAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+        TableStatisticsAverage.setItems(data);
+    }
+
+    private void query6(Queries query){
+        String[][][] rows = query.query6();
+        String time[] = {"Morning", "Afternoon", "Evening"};
+
+        ObservableList<StatisticsPopular> data = FXCollections.observableArrayList();
+
+        data.add(new StatisticsPopular(rows[0][0][0], time[0], 1, rows[1][0][0]));
+        data.add(new StatisticsPopular(rows[0][0][1], time[0], 2, rows[1][0][1]));
+        data.add(new StatisticsPopular(rows[0][0][2], time[0], 3, rows[1][0][2]));
+
+        data.add(new StatisticsPopular(rows[0][1][0], time[1], 1, rows[1][1][0]));
+        data.add(new StatisticsPopular(rows[0][1][1], time[1], 2, rows[1][1][1]));
+        data.add(new StatisticsPopular(rows[0][1][2], time[1], 3, rows[1][1][2]));
+
+        data.add(new StatisticsPopular(rows[0][2][0], time[2], 1, rows[1][2][0]));
+        data.add(new StatisticsPopular(rows[0][2][1], time[2], 2, rows[1][2][1]));
+        data.add(new StatisticsPopular(rows[0][2][2], time[2], 3, rows[1][2][2]));
+
+        TableStatisticsPopularPick.setCellValueFactory(new PropertyValueFactory<>("pickUp"));
+        TableStatisticsPopularTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TableStatisticsPopularPlace.setCellValueFactory(new PropertyValueFactory<>("place"));
+        TableStatisticsPopularDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
+
+        TableStatisticsPopular.setItems(data);
+    }
 
 
 
@@ -214,8 +307,111 @@ public class Controller {
             return amount.get();
         }
 
-        public void setAmount(int amount){
+        public void setAmount(float amount){
             this.amount.set(amount);
+        }
+
+    }
+
+    public class Customer{
+        private SimpleStringProperty username;
+        private SimpleIntegerProperty orderID;
+
+        Customer(String username, int orderID){
+            this.username = new SimpleStringProperty(username);
+            this.orderID = new SimpleIntegerProperty(orderID);
+        }
+
+        public String getUsername(){
+            return username.get();
+        }
+
+        public void setUsername(String day){
+            this.username.set(day);
+        }
+
+
+        public int getOrderID(){
+            return orderID.get();
+        }
+
+        public void setOrderID(int orderID){
+            this.orderID.set(orderID);
+        }
+
+    }
+
+    public class StaristicsAverage{
+        private SimpleStringProperty name;
+        private SimpleFloatProperty amount;
+
+        StaristicsAverage(String name, float amount){
+            this.name = new SimpleStringProperty(name);
+            this.amount = new SimpleFloatProperty(amount);
+        }
+
+        public String getName(){
+            return name.get();
+        }
+
+        public void setName(String day){
+            this.name.set(day);
+        }
+
+
+        public float getAmount(){
+            return amount.get();
+        }
+
+        public void setAmount(float orderID){
+            this.amount.set(orderID);
+        }
+
+    }
+
+    public class StatisticsPopular{
+        private SimpleStringProperty time;
+        private SimpleStringProperty pickUp;
+        private SimpleStringProperty destination;
+        private SimpleIntegerProperty place;
+
+        StatisticsPopular(String pickUp, String time, int place, String destination){
+            this.time = new SimpleStringProperty(time);
+            this.pickUp = new SimpleStringProperty(pickUp);
+            this.destination = new SimpleStringProperty(destination);
+            this.place = new SimpleIntegerProperty(place);
+        }
+
+        public String getTime(){
+            return time.get();
+        }
+
+        public void setTime(String time){
+            this.time.set(time);
+        }
+
+        public String getPickUp(){
+            return pickUp.get();
+        }
+
+        public void setPickUp(String pickUp){
+            this.pickUp.set(pickUp);
+        }
+
+        public String getDestination(){
+            return destination.get();
+        }
+
+        public void setAmount(String destination){
+            this.destination.set(destination);
+        }
+
+        public int getPlace(){
+            return this.place.get();
+        }
+
+        public void setPlace(int place){
+            this.place.set(place);
         }
 
     }

@@ -43,10 +43,10 @@
                                              <font>
                                                 <Font size="16.0" />
                                              </font></Label>
-                                          <TableView layoutX="22.0" layoutY="93.0" prefHeight="341.0" prefWidth="691.0">
+                                          <TableView fx:id="TableCustomer" layoutX="22.0" layoutY="93.0" prefHeight="341.0" prefWidth="691.0">
                                             <columns>
-                                              <TableColumn prefWidth="310.0" text="Username" />
-                                                <TableColumn minWidth="2.0" prefWidth="380.0" text="Number of payments" />
+                                              <TableColumn fx:id="TableUsernameCustomer" prefWidth="310.0" text="Username" />
+                                                <TableColumn fx:id="TableOrderCustomer" minWidth="2.0" prefWidth="380.0" text="Order ID" />
                                             </columns>
                                           </TableView>
                                        </children></AnchorPane>
@@ -80,7 +80,7 @@
                                              </font>
                                           </Label>
                                           <TextField fx:id="Color" layoutX="162.0" layoutY="59.0" />
-                                          <TableView fx:id="CarParameterTable" layoutX="28.0" layoutY="114.0" prefHeight="230.0" prefWidth="684.0">
+                                          <TableView fx:id="CarParameterTable" layoutX="28.0" layoutY="114.0" prefHeight="295.0" prefWidth="684.0">
                                             <columns>
                                               <TableColumn prefWidth="683.0" text="Registration plate" />
                                             </columns>
@@ -227,13 +227,18 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <DatePicker layoutX="69.0" layoutY="30.0" />
+                                          <DatePicker fx:id="StatisticsDateAverage" layoutX="69.0" layoutY="30.0" />
                                           <Label layoutX="28.0" layoutY="33.0" text="Date">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <TextArea layoutX="28.0" layoutY="89.0" prefHeight="286.0" prefWidth="683.0" />
+                                          <TableView fx:id="TableStatisticsAverage" layoutX="28.0" layoutY="95.0" prefHeight="200.0" prefWidth="685.0">
+                                            <columns>
+                                              <TableColumn fx:id="TableStatisticsAverageName" prefWidth="324.0" text="Name" />
+                                              <TableColumn fx:id="TableStatisticsAverageAmount" prefWidth="361.0" text="Amount" />
+                                            </columns>
+                                          </TableView>
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -242,13 +247,15 @@
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <DatePicker layoutX="69.0" layoutY="30.0" />
-                                          <Label layoutX="28.0" layoutY="33.0" text="Date">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TextArea layoutX="28.0" layoutY="89.0" prefHeight="286.0" prefWidth="683.0" />
+                                          <TableView fx:id="TableStatisticsPopular" layoutX="28.0" layoutY="94.0" prefHeight="200.0" prefWidth="681.0">
+                                            <columns>
+                                              <TableColumn fx:id="TableStatisticsPopularTime" prefWidth="141.0" text="Time" />
+                                              <TableColumn fx:id="TableStatisticsPopularPick" prefWidth="227.0" text="Pick-up" />
+                                                <TableColumn fx:id="TableStatisticsPopularDestination" prefWidth="216.0" text="Destination" />
+                                                <TableColumn fx:id="TableStatisticsPopularPlace" prefWidth="96.0" text="Place" />
+                                            </columns>
+                                          </TableView>
+                                          <Button fx:id="UpdateButtonStatisticsPopular" layoutX="50.0" layoutY="27.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
                                        </children>
                                     </AnchorPane>
                                  </content>
