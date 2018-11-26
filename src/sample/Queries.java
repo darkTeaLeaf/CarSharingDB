@@ -1,5 +1,4 @@
 package sample;
-import com.mysql.jdbc.Driver;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -50,17 +49,19 @@ public class Queries {
     }
 
 
-    int[] query2(String uid, Timestamp date){
+    ArrayList<Integer> query2(String uid, Date date){
 
         String time[] = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
                 "15", "16", "17", "18", "19", "20", "21", "22", "23"};
-        int statistics[] = new int[24];
+        ArrayList<Integer> statistics = new ArrayList<>(24);
         try {
 
             for(int i = 0; i < 24; i++) {
-                String query = String.format("SELECT COUNT(*) AS count FROM charging WHERE uid =\'%s\' AND " +
-                        "time_start LIKE \'%s "+ time[i] +"%%\' OR time_finish LIKE \'%s "+ time[i] +"%%\'", uid, date.toString());
-                statistics[i] = stmt.executeQuery(query).getInt("count");
+                String query = String.format("SELECT COUNT(*) AS count FROM charging WHERE id_charging_station =\'%s\' AND " +
+                        "(time_start LIKE \'%s %s%%\' OR time_finish LIKE \'%s %s%%\')", uid, date.toString(), time[i], date.toString(), time[i]);
+                ResultSet rs = stmt.executeQuery(query);
+                rs.next();
+                statistics.add(rs.getInt("count"));
             }
 
         } catch (SQLException e) {
