@@ -202,17 +202,27 @@ public class Queries {
     }
 
 
+    HashMap<String, Integer> query8(Date starting_date){
 
+        String join_rent_and_charge = String.format("rent INNER JOIN charging ON rent.id_car = charging.id_car AND " +
+                "DATE(rent.time_rent) = DATE(charging.time_start) AND DATE(time_rent) BETWEEN \'%s\' " +
+                "AND DATE_ADD(\'%s\', INTERVAL 1 MONTH)", starting_date.toString(), starting_date.toString());
 
-    //не могу понять задание
+        String query = String.format("SELECT username, COUNT(charging.time_start) as c FROM %s GROUP BY username", join_rent_and_charge);
 
-    /*HashMap<String, Integer> query8(Date starting_date){
+        HashMap<String, Integer> result = new HashMap<>();
 
-        String query = String.format("SELECT username, COUNT(*) FROM rent INNER JOIN (SELECT time_start FROM charging ")
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                result.put(rs.getString("username"), rs.getInt("c"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-
-
-    }*/
+        return result;
+    }
 
     HashMap<Integer, String> query9(){
 
