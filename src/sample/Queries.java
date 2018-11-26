@@ -4,8 +4,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 
 public class Queries {
 
@@ -240,18 +238,20 @@ public class Queries {
 
     String query10(){
 
-        String query_charging = "SELECT charging.id_car, SUM(charging_station.cost*TIMESTAMPDIFF(MINUTE, charging.time_finish, charging.time_start)) as ch_sum" +
-                "FROM charging INNER JOIN station (ON charging.id_charging_station = charging_station.uid) GROUP BY charging.id_car";
+        String query_charging = "SELECT charging.id_car, " +
+                "SUM(charging_station.cost*TIMESTAMPDIFF(MINUTE, charging.time_start, charging.time_finish)) as ch_sum " +
+                "FROM charging INNER JOIN charging_station ON charging.id_charging_station = charging_station.uid GROUP BY charging.id_car\n";
 
         String query_repair = "SELECT id_car, SUM(cost) as rep_sum FROM is_repaired_in GROUP BY id_car";
 
-        String query_sum = String.format("SELECT id_car, (ch_sum + rep_sum) as s FROM (%s) ch INNER JOIN (%s) rep (ON ch.id_car = rep.id_car)", query_charging, query_repair);
+        String query_sum = String.format("SELECT ch.id_car, ((ch_sum + rep_sum)/DATEDIFF(NOW(), (SELECT date_start FROM car where id = ch.id_car))) as s FROM (%s) ch INNER JOIN (%s) rep ON ch.id_car = rep.id_car", query_charging, query_repair);
 
-        String query = String.format("SELECT type, MAX(SUM(s)) FROM car INNER JOIN (%s) as s_t WHERE car.id = s_t.id_car GROUP BY type", query_sum);
+        String query = String.format("SELECT type, MAX(s) FROM car INNER JOIN (%s) as s_t ON car.id = s_t.id_car GROUP BY type", query_sum);
 
         try {
-            String type = stmt.executeQuery(query).getString("type");
-            return type;
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getString("type");
         } catch (SQLException e) {
             e.printStackTrace();
         }
