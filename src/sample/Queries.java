@@ -128,10 +128,11 @@ public class Queries {
         float average[] = new float[2]; //0 - distance, 1 - time
 
         String query = String.format("SELECT AVG(distance) as distance_avg, " +
-                "AVG(TIMEDIFF(time_finish, time_start) AS trip_avg, FROM rent WHERE DATE(time_start)=%s", date.toString());
+                "AVG(TIMEDIFF(time_finish, time_start)) AS trip_avg FROM rent WHERE DATE(time_start)=\'%s\'", date.toString());
 
         try {
             ResultSet rs = stmt.executeQuery(query);
+            rs.next();
             average[0] = rs.getFloat("distance_avg");
             average[1] = rs.getFloat("trip_avg");
 
