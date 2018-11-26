@@ -76,7 +76,7 @@ public class Controller {
     public void initialize(){
         //First query
 
-        Queries query = new Queries("jdbc:mysql://localhost:3306/test");
+        Queries query = new Queries("jdbc:mysql://localhost:3306/finalversion");
 
         RegPlate.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -536,7 +536,7 @@ public class Controller {
         }
     }
 
-    class CarAmount{
+    public class CarAmount{
         private SimpleIntegerProperty id;
 
         CarAmount(int id){

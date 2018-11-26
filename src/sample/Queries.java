@@ -158,12 +158,12 @@ public class Queries {
                 for (int j = 0; j < 3; j++) {
                     String query_from = String.format("SELECT %s, COUNT(*) as number FROM rent WHERE " +
                                     "(TIME(time_start) >= TIME(%s) AND TIME(time_start) <= TIME(%s)) OR " +
-                                    "(TIME(time_finish) >= TIME(%s) AND TIME(time_finish) <= TIME(%s)) ORDER BY number DESC",
-                            fromto[i], time[j][0], time[j][1], time[j][0], time[j][1]);
+                                    "(TIME(time_finish) >= TIME(%s) AND TIME(time_finish) <= TIME(%s)) GROUP BY %s ORDER BY number DESC",
+                            fromto[i], time[j][0], time[j][1], time[j][0], time[j][1], fromto[i]);
 
                     ResultSet rs = stmt.executeQuery(query_from);
-                    rs.next();
                     for(int k = 0; k < 3; k++){
+                        rs.next();
                         top_places[i][j][k] = rs.getString(fromto[i]);
                     }
                 }
