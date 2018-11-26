@@ -1,12 +1,12 @@
 package sample;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.sql.Date;
@@ -36,7 +36,7 @@ public class Controller {
     public void initialize(){
         //First query
 
-        Queries query = new Queries(""); //TODO
+        Queries query = new Queries("jdbc:mysql://localhost:3306/test"); //TODO
 
         RegPlate.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -115,9 +115,6 @@ public class Controller {
 
         ObservableList<StationAmount> data = FXCollections.observableArrayList();
 
-        TableStationTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-        TableStationAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
-
         String time[] = {"00h-01h", "01h-02h", "02h-03h", "03h-04h", "04h-05h", "05h-06h", "06h-07h", "07h-08h",
                 "08h-09h", "09h-10h", "10h-11h", "11h-12h", "12h-13h", "13-14h", "14h-15h",
                 "15h-16h", "16h-17h", "17h-18h", "18h-19h", "19h-20h", "20h-21h", "21h-22h", "22h-23h", "23h-24h"};
@@ -126,24 +123,44 @@ public class Controller {
             data.add(new StationAmount(time[i], rows.get(i)));
         }
 
+        TableStationTime.setCellValueFactory(new PropertyValueFactory<StationAmount, String>("time"));
+        TableStationAmount.setCellValueFactory(new PropertyValueFactory<StationAmount, Integer>("amount"));
+
         TableStation.setItems(data);
 
         IDStation.setText("");
     }
 
     private void query3(Queries query){
+
     }
 
 
 
 
-    class StationAmount{
-        private String time;
-        private int amount;
+    public class StationAmount{
+        private SimpleStringProperty time;
+        private SimpleIntegerProperty amount;
 
         StationAmount(String time, int amount){
-            this.time = time;
-            this.amount = amount;
+            this.time = new SimpleStringProperty(time);
+            this.amount = new SimpleIntegerProperty(amount);
+        }
+
+        public String getTime(){
+            return time.get();
+        }
+
+        public void setTime(String time){
+            this.time.set(time);
+        }
+
+        public int getAmount(){
+            return amount.get();
+        }
+
+        public void setAmount(int amount){
+            this.amount.set(amount);
         }
     }
 
