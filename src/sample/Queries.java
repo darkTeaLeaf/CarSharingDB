@@ -8,14 +8,13 @@ import java.util.ArrayList;
 public class Queries {
 
     // JDBC URL, username and password of MySQL server
-    private static final String url = "jdbc:mysql://localhost:3306/test";
     private static final String user = "root";
     private static final String password = "root";
 
     private static Connection con;
     private static Statement stmt;
 
-    Queries(){
+    Queries(String url){
         try {
             con = DriverManager.getConnection(url, user, password);
             // getting Statement object to execute query
@@ -26,18 +25,19 @@ public class Queries {
     }
 
 
-    ArrayList<String> query1(String username, Timestamp date, String color, String plate){
-        String query_rent = String.format("SELECT registration_plate FROM rent WHERE username_customer=\'%s\' AND" +
-                "time_rent LIKE \'%"+ date.toString() + "%\'", username);
+    ArrayList<String> query1(String username, Date date, String color, String plate){
+        String query_rent = String.format("SELECT id_car FROM rent WHERE username_customer=\'%s\' AND " +
+                "time_rent LIKE \'%%%s%%\'", username, date.toString());
 
-        String query_car = String.format("SELECT registration_plate FROM car WHERE registration_plate LIKE \'"
-                + color + "%\' AND color=\'%s\' AND", plate);
+        String query_car = String.format("SELECT id AS id_car FROM car WHERE registration_plate LIKE \'%s%%\'" +
+                " AND color=\'%s\'", plate, color);
         ArrayList<String> cars = new ArrayList<>();
 
         try {
-            ResultSet rs = stmt.executeQuery(query_rent + " INTERSECT " + query_car);
+            String query = String.format("SELECT id_car FROM (%s) A WHERE A.id_car IN (%s)", query_rent, query_car);
+            ResultSet rs = stmt.executeQuery(query);
             while(rs.next()){
-                cars.add(rs.getString("registration_plate"));
+                cars.add(String.valueOf(rs.getInt("id_car")));
             }
             return cars;
         } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class Queries {
 
             for(int i = 0; i < 24; i++) {
                 String query = String.format("SELECT COUNT(*) AS count FROM charging WHERE uid =\'%s\' AND " +
-                        "time_start LIKE \'%s "+ time[i] +"%\' OR time_finish LIKE \'%s "+ time[i] +"%\'", uid, date.toString());
+                        "time_start LIKE \'%s "+ time[i] +"%%\' OR time_finish LIKE \'%s "+ time[i] +"%%\'", uid, date.toString());
                 statistics[i] = stmt.executeQuery(query).getInt("count");
             }
 
@@ -104,7 +104,7 @@ public class Queries {
         LocalDate firstDay = LocalDate.now().minusDays(31);
 
         String query = String.format("SELECT COUNT(id_rent) as number FROM payment INNER JOIN rent " +
-                "(ON payment.id_rent = rent.id) WHERE username = %s AND DATE(datetime) > \'%s\' GROUP BY id_rent HAVING count(*)>1)", username, firstDay.toString());
+                "(ON payment.id_rent = rent.id) WHERE username = %s AND DATE(date_p) > \'%s\' GROUP BY id_rent HAVING count(*)>1)", username, firstDay.toString());
         try {
             return stmt.executeQuery(query).getInt("number");
         } catch (SQLException e) {
@@ -159,7 +159,7 @@ public class Queries {
 
             stmt.executeQuery(creating_query);
 
-            String fromto[] = {"from", "to"};
+            String fromto[] = {"from_p", "to_p"};
 
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 3; j++) {
