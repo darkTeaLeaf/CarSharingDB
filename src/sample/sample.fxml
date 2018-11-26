@@ -75,32 +75,35 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <Label layoutX="20.0" layoutY="21.0" prefHeight="30.0" prefWidth="142.0" text="Registaration plate">
+                                          <Label layoutX="23.0" layoutY="21.0" prefHeight="30.0" prefWidth="142.0" text="Registaration plate">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="162.0" layoutY="21.0" />
-                                          <Label layoutX="22.0" layoutY="60.0" prefHeight="29.0" prefWidth="139.0" text="Color">
+                                          <TextField fx:id="RegPlate" layoutX="162.0" layoutY="21.0" />
+                                          <Label layoutX="24.0" layoutY="60.0" prefHeight="29.0" prefWidth="139.0" text="Color">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <TextField layoutX="162.0" layoutY="59.0" />
-                                          <Label layoutX="387.0" layoutY="23.0" prefHeight="28.0" prefWidth="134.0" text="Type">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField layoutX="432.0" layoutY="23.0" />
-                                          <TableView layoutX="28.0" layoutY="114.0" prefHeight="230.0" prefWidth="684.0">
+                                          <TextField fx:id="Color" layoutX="162.0" layoutY="59.0" />
+                                          <TableView fx:id="CarParameterTable" layoutX="28.0" layoutY="114.0" prefHeight="230.0" prefWidth="684.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="ID" />
-                                              <TableColumn prefWidth="221.0" text="Registration plate" />
-                                                <TableColumn prefWidth="230.0" text="Color" />
-                                                <TableColumn prefWidth="157.0" text="Type" />
+                                              <TableColumn prefWidth="683.0" text="Registration plate" />
                                             </columns>
                                           </TableView>
+                                          <TextField fx:id="UsernameCarParameter" layoutX="491.0" layoutY="21.0" prefHeight="31.0" prefWidth="217.0" />
+                                          <Label layoutX="412.0" layoutY="24.0" text="Username">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <DatePicker fx:id="DateCarParameter" layoutX="491.0" layoutY="58.0" />
+                                          <Label layoutX="413.0" layoutY="62.0" text="Date">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -209,24 +212,13 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <DatePicker layoutX="67.0" layoutY="25.0" />
-                                          <DatePicker layoutX="67.0" layoutY="70.0" />
-                                          <Label layoutX="23.0" layoutY="30.0" text="From">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="24.0" layoutY="70.0" text="To">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <TableView layoutX="23.0" layoutY="119.0" prefHeight="254.0" prefWidth="691.0">
+                                          <TableView fx:id="TableStatisticsBusy" layoutX="24.0" layoutY="68.0" prefHeight="254.0" prefWidth="691.0">
                                             <columns>
                                               <TableColumn prefWidth="313.0" text="Time" />
                                               <TableColumn prefWidth="377.0" text="Amount" />
                                             </columns>
                                           </TableView>
+                                          <Button fx:id="UpdateButtonStatisticsBusy" layoutX="47.0" layoutY="14.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Update" />
                                        </children>
                                     </AnchorPane>
                               </content>
