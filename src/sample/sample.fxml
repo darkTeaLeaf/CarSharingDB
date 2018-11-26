@@ -33,7 +33,7 @@
                      <children>
                         <Accordion prefHeight="493.0" prefWidth="740.0">
                           <panes>
-                            <TitledPane animated="false" text="Information about payments">
+                            <TitledPane animated="false" text="Information about payments (Query 4)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="406.0" prefWidth="757.0">
                                        <children>
@@ -60,7 +60,7 @@
                      <children>
                         <Accordion prefHeight="491.0" prefWidth="740.0">
                           <panes>
-                            <TitledPane animated="false" text="Find a car according to particular parameters">
+                            <TitledPane animated="false" text="Find a car according to particular parameters (Query 1)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -81,7 +81,7 @@
                                     </AnchorPane>
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Find a car according to amount of orders">
+                            <TitledPane animated="false" text="Find a car according to amount of orders (Query 7)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -105,7 +105,7 @@
                      <children>
                         <Accordion prefHeight="493.0" prefWidth="740.0">
                           <panes>
-                            <TitledPane animated="false" text="Efficiency of charging stations">
+                            <TitledPane animated="false" text="Efficiency of charging stations (Query 2)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -134,7 +134,7 @@
                      <children>
                         <Accordion prefHeight="492.0" prefWidth="740.0">
                           <panes>
-                            <TitledPane animated="false" text="The most required parts for workshops">
+                            <TitledPane animated="false" text="The most required parts for workshops (Query 9)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -160,7 +160,7 @@
                      <children>
                         <Accordion prefHeight="492.0" prefWidth="740.0">
                           <panes>
-                            <TitledPane animated="false" text="Statistic of busy cars">
+                            <TitledPane animated="false" text="Statistic of busy cars (Query 3)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -176,7 +176,7 @@
                                     </AnchorPane>
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Average distance and duration">
+                            <TitledPane animated="false" text="Average distance and duration (Query 5)">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -196,7 +196,7 @@
                                     </AnchorPane>
                               </content>
                             </TitledPane>
-                              <TitledPane animated="false" layoutX="10.0" layoutY="41.0" text="Popular pick-up locations and destinations">
+                              <TitledPane animated="false" layoutX="10.0" layoutY="41.0" text="Popular pick-up locations and destinations (Query 6)">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -213,7 +213,7 @@
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" layoutX="10.0" layoutY="72.0" text="Dependence number of chargings and locations">
+                              <TitledPane animated="false" layoutX="10.0" layoutY="72.0" text="Dependence number of chargings and locations (Query 8)">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -232,7 +232,7 @@
                                        </children></AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" layoutX="10.0" layoutY="103.0" text="Type of cars with highest average cost of repairs and charging ">
+                              <TitledPane animated="false" layoutX="10.0" layoutY="103.0" text="Type of cars with highest average cost of repairs and charging (Query 10)">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
