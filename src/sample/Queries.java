@@ -4,6 +4,9 @@ import com.mysql.jdbc.Driver;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Queries {
 
@@ -182,21 +185,80 @@ public class Queries {
     }
 
 
-//    String query10(){
-//
-//        String type;
-//
-//        String query_charging = "SELECT charging.id_car, SUM(charging_station.cost*TIMESTAMPDIFF(MINUTE, charging.time_finish, charging.time_start))" +
-//                "FROM charging INNER JOIN station (ON charging.id_charging_station = charging_station.uid) GROUP BY charging.id_car";
-//
-//        String query_repair = "SELECT id_car, SUM(cost) FROM is_repaired_in GROUP BY id_car";
-//
-//        String query = String.format("SELECT type FROM (%s) ch INNER JOIN (%s) rep (ON ch.id_car = rep.id_car) WHERE ", query_charging, query_repair);
-//
-//        stmt.executeQuery(query_repair);
-//
-//        return type;
-//    }
+    ArrayList<Integer> query7(){
+
+        String amount_query = "(SELECT COUNT(*) FROM car)";
+
+        String query = "SELECT id_car, COUNT(*) as num FROM rent WHERE DATEDIFF(NOW(), time_rent) <= 90 GROUP BY id_car ORDER BY num" +
+                " LIMIT " + amount_query +"*0.1";
+
+        ArrayList<Integer> result = new ArrayList<>();
+
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                result.add(rs.getInt("id_car"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
+    //не могу понять задание
+
+    /*HashMap<String, Integer> query8(Date starting_date){
+
+        String query = String.format("SELECT username, COUNT(*) FROM rent INNER JOIN (SELECT time_start FROM charging ")
+
+
+
+    }*/
+
+    HashMap<Integer, String> query9(){
+
+        String min_day_query = "SELECT MIN(date) FROM is_repaired_in";
+        String query = String.format("SELECT wid, vendor_code, MAX(COUNT(*)/(DATEDIFF(NOW(), \'%s\')/7)) FROM used_parts GROUP BY wid, vendor_code", min_day_query);
+
+        HashMap<Integer, String> result = new HashMap<>();
+
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()){
+                result.put(rs.getInt("wid"), rs.getString("vendor_code"));
+            }
+            return result;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    String query10(){
+
+        String query_charging = "SELECT charging.id_car, SUM(charging_station.cost*TIMESTAMPDIFF(MINUTE, charging.time_finish, charging.time_start)) as ch_sum" +
+                "FROM charging INNER JOIN station (ON charging.id_charging_station = charging_station.uid) GROUP BY charging.id_car";
+
+        String query_repair = "SELECT id_car, SUM(cost) as rep_sum FROM is_repaired_in GROUP BY id_car";
+
+        String query_sum = String.format("SELECT id_car, (ch_sum + rep_sum) as s FROM (%s) ch INNER JOIN (%s) rep (ON ch.id_car = rep.id_car)", query_charging, query_repair);
+
+        String query = String.format("SELECT type, MAX(SUM(s)) FROM car INNER JOIN (%s) as s_t WHERE car.id = s_t.id_car GROUP BY type", query_sum);
+
+        try {
+            String type = stmt.executeQuery(query).getString("type");
+            return type;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 
 }
