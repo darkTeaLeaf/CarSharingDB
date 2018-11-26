@@ -26,9 +26,9 @@ public class Queries {
     }
 
 
-    ArrayList<String> query1(String username, Date date, String color, String plate){
+    ArrayList<String> query1(String username, Timestamp date, String color, String plate){
         String query_rent = String.format("SELECT registration_plate FROM rent WHERE username_customer=\'%s\' AND" +
-                "time_rent LIKE \'%"+ date + "%\'", username);
+                "time_rent LIKE \'%"+ date.toString() + "%\'", username);
 
         String query_car = String.format("SELECT registration_plate FROM car WHERE registration_plate LIKE \'"
                 + color + "%\' AND color=\'%s\' AND", plate);
@@ -47,7 +47,7 @@ public class Queries {
     }
 
 
-    int[] query2(String uid, Date date){
+    int[] query2(String uid, Timestamp date){
 
         String time[] = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
                 "15", "16", "17", "18", "19", "20", "21", "22", "23"};
@@ -56,7 +56,7 @@ public class Queries {
 
             for(int i = 0; i < 24; i++) {
                 String query = String.format("SELECT COUNT(*) AS count FROM charging WHERE uid =\'%s\' AND " +
-                        "time_start LIKE \'%s "+ time[i] +"%\' OR time_finish LIKE \'%s "+ time[i] +"%\'", uid, date);
+                        "time_start LIKE \'%s "+ time[i] +"%\' OR time_finish LIKE \'%s "+ time[i] +"%\'", uid, date.toString());
                 statistics[i] = stmt.executeQuery(query).getInt("count");
             }
 
@@ -86,7 +86,7 @@ public class Queries {
                                     "DATE(time_start)=DATE(\'%s\') AND ((TIME(time_start) >= TIME(\'%s\') AND " +
                                     "TIME(time_start) <= TIME(\'%s\')) OR (TIME(time_finish) >= TIME(\'%s\') AND " +
                                     "TIME(time_finish) <= TIME(\'%s\')))",
-                            Date.valueOf(firstDay.plusDays(i)), time[j][0], time[j][1], time[j][0], time[j][1]);
+                            Date.valueOf(firstDay.plusDays(i)).toString(), time[j][0], time[j][1], time[j][0], time[j][1]);
                     busyNumber[i][j] = stmt.executeQuery("SELECT COUNT(*) as count FROM "+ query).getInt("count");
                     busy[i][j] = (float)100*busyNumber[i][j]/totalNumber;
                 }
@@ -104,7 +104,7 @@ public class Queries {
         LocalDate firstDay = LocalDate.now().minusDays(31);
 
         String query = String.format("SELECT COUNT(id_rent) as number FROM payment INNER JOIN rent " +
-                "(ON payment.id_rent = rent.id) WHERE username = %s GROUP BY id_rent HAVING count(*)>1)", username);
+                "(ON payment.id_rent = rent.id) WHERE username = %s AND DATE(datetime) > \'%s\' GROUP BY id_rent HAVING count(*)>1)", username, firstDay.toString());
         try {
             return stmt.executeQuery(query).getInt("number");
         } catch (SQLException e) {
@@ -119,7 +119,7 @@ public class Queries {
         float average[] = new float[2]; //0 - distance, 1 - time
 
         String query = String.format("SELECT AVG(distance) as distance_avg, " +
-                "AVG(TIMEDIFF(time_finish, time_start) AS trip_avg, FROM rent WHERE DATE(time_start)=%s", date);
+                "AVG(TIMEDIFF(time_finish, time_start) AS trip_avg, FROM rent WHERE DATE(time_start)=%s", date.toString());
 
         try {
             ResultSet rs = stmt.executeQuery(query);
@@ -135,7 +135,6 @@ public class Queries {
 
 
     String[][][] query6(){
-        Date lastDay = Date.valueOf(LocalDate.now().minusDays(1));
 
         String top_places[][][] = new String[2][3][3]; //first index: 0 - from, 1 - to;
         //second index - time (morning, afternoon, evening), third - place
@@ -181,5 +180,23 @@ public class Queries {
         }
         return top_places;
     }
+
+
+//    String query10(){
+//
+//        String type;
+//
+//        String query_charging = "SELECT charging.id_car, SUM(charging_station.cost*TIMESTAMPDIFF(MINUTE, charging.time_finish, charging.time_start))" +
+//                "FROM charging INNER JOIN station (ON charging.id_charging_station = charging_station.uid) GROUP BY charging.id_car";
+//
+//        String query_repair = "SELECT id_car, SUM(cost) FROM is_repaired_in GROUP BY id_car";
+//
+//        String query = String.format("SELECT type FROM (%s) ch INNER JOIN (%s) rep (ON ch.id_car = rep.id_car) WHERE ", query_charging, query_repair);
+//
+//        stmt.executeQuery(query_repair);
+//
+//        return type;
+//    }
+
 
 }
