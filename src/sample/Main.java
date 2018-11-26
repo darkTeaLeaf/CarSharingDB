@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Car Sharing");
-        primaryStage.setScene(new Scene(root, 740, 530));
+        primaryStage.setScene(new Scene(root, 540, 530));
         primaryStage.show();
     }
 
