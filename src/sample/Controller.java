@@ -237,13 +237,13 @@ public class Controller {
     }
 
     private void query4(Queries query){
-        //ArrayList<Integer> rows = query.query4(UsernameCustomer.getText());
+        ArrayList<Integer> rows = query.query4(UsernameCustomer.getText());
 
-        ObservableList<StatisticsBusy> data = FXCollections.observableArrayList();
+        ObservableList<Customer> data = FXCollections.observableArrayList();
 
-//        for (int i = 0; i < rows.size(); i++) {
-//            data.add(new Customer(UsernameCustomer.getText(), rows.get(i)));
-//        }
+        for (int i = 0; i < rows.size(); i++) {
+            data.add(new Customer(UsernameCustomer.getText(), rows.get(i)));
+        }
 
         TableUsernameCustomer.setCellValueFactory(new PropertyValueFactory<>("username"));
         TableOrderCustomer.setCellValueFactory(new PropertyValueFactory<>("orderID"));
