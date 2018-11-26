@@ -208,14 +208,14 @@ public class Queries {
                 "DATE(rent.time_rent) = DATE(charging.time_start) AND DATE(time_rent) BETWEEN \'%s\' " +
                 "AND DATE_ADD(\'%s\', INTERVAL 1 MONTH)", starting_date.toString(), starting_date.toString());
 
-        String query = String.format("SELECT username, COUNT(charging.time_start) as c FROM %s GROUP BY username", join_rent_and_charge);
+        String query = String.format("SELECT username_customer, COUNT(charging.time_start) as c FROM %s GROUP BY username_customer", join_rent_and_charge);
 
         HashMap<String, Integer> result = new HashMap<>();
 
         try {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                result.put(rs.getString("username"), rs.getInt("c"));
+                result.put(rs.getString("username_customer"), rs.getInt("c"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

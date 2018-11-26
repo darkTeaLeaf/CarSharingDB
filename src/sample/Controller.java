@@ -319,13 +319,13 @@ public class Controller {
         java.util.Date date = Date.from(instant);
         java.sql.Date sDate = new java.sql.Date(date.getTime());
 
-//        HashMap<String, Integer> rows = query.query8(sDate);
+        HashMap<String, Integer> rows = query.query8(sDate);
 
         ObservableList<StatisticsLocation> data = FXCollections.observableArrayList();
 
-//        for(String key: rows.keySet()){
-//            data.add(new StatisticsLocation(rows.get(key), key));
-//        }
+        for(String key: rows.keySet()){
+            data.add(new StatisticsLocation(rows.get(key), key));
+        }
 
         TableStatisticsLocationUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
         TableStatisticsLocationAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
