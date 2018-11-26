@@ -177,19 +177,25 @@ public class Queries {
 
 
     ArrayList<Integer> query7(){
+        String amount_query = "SELECT COUNT(id) AS amount FROM car";
 
-        String amount_query = "(SELECT COUNT(*) FROM car)";
-
-        String query = "SELECT id_car, COUNT(*) as num FROM rent WHERE DATEDIFF(NOW(), time_rent) <= 90 GROUP BY id_car ORDER BY num" +
-                " LIMIT " + amount_query +"*0.1";
 
         ArrayList<Integer> result = new ArrayList<>();
 
         try {
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(amount_query);
+            rs.next();
+            int amount = rs.getInt("amount");
+
+            String query = "SELECT car.id, COUNT(rent.id) as num FROM rent RIGHT OUTER JOIN car ON rent.id_car = car.id " +
+                    "WHERE time_rent IS NULL OR DATEDIFF(NOW(), time_rent) <= 90 GROUP BY car.id ORDER BY num LIMIT " +
+                    (int)amount/10;
+
+            rs = stmt.executeQuery(query);
             while (rs.next()){
-                result.add(rs.getInt("id_car"));
+                result.add(rs.getInt("car.id"));
             }
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
