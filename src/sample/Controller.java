@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,14 +25,17 @@ public class Controller {
     public TextField UsernameCarParameter;
     public DatePicker DateCarParameter;
 
-    public TableView TableStatisticsBusy;
-    public Button UpdateButtonStatisticsBusy;
-
     public DatePicker DateStation;
     public TextField IDStation;
     public TableView<StationAmount> TableStation;
     public TableColumn<StationAmount, String> TableStationTime;
     public TableColumn<StationAmount, Integer> TableStationAmount;
+
+    public TableView TableStatisticsBusy;
+    public Button UpdateButtonStatisticsBusy;
+    public TableColumn TableStatisticsDay;
+    public TableColumn TableStatisticsTime;
+    public TableColumn TableStatisticsAmount;
 
     public void initialize(){
         //First query
@@ -78,7 +82,7 @@ public class Controller {
 
         //Third query
         UpdateButtonStatisticsBusy.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-
+            query3(query);
         });
 
         //Forth query
@@ -132,7 +136,22 @@ public class Controller {
     }
 
     private void query3(Queries query){
+        float[][] rows = query.query3();
+        String time[] = {"Morning", "Afternoon", "Evening"};
 
+        ObservableList<StatisticsBusy> data = FXCollections.observableArrayList();
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 3; j++) {
+                data.add(new StatisticsBusy(String.valueOf(8 - i) + " days ago", time[j],rows[i][j]));
+            }
+        }
+
+        TableStatisticsDay.setCellValueFactory(new PropertyValueFactory<>("day"));
+        TableStatisticsTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+        TableStatisticsAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+        TableStatisticsBusy.setItems(data);
     }
 
 
@@ -162,6 +181,43 @@ public class Controller {
         public void setAmount(int amount){
             this.amount.set(amount);
         }
+    }
+
+    public class StatisticsBusy{
+        private SimpleStringProperty day;
+        private SimpleStringProperty time;
+        private SimpleFloatProperty amount;
+
+        StatisticsBusy(String day, String time, float amount){
+            this.day = new SimpleStringProperty(day);
+            this.time = new SimpleStringProperty(time);
+            this.amount = new SimpleFloatProperty(amount);
+        }
+
+        public String getDay(){
+            return day.get();
+        }
+
+        public void setDay(String day){
+            this.day.set(day);
+        }
+
+        public String getTime(){
+            return time.get();
+        }
+
+        public void setTime(String time){
+            this.time.set(time);
+        }
+
+        public float getAmount(){
+            return amount.get();
+        }
+
+        public void setAmount(int amount){
+            this.amount.set(amount);
+        }
+
     }
 
 }
