@@ -105,19 +105,20 @@ public class Queries {
     }
 
     //возвращает количество поездок, за которые пользователь заплатил больше одного раза. вроде..
-    int query4(String username){
+    ArrayList<Integer> query4(String username){
         LocalDate firstDay = LocalDate.now().minusDays(31);
 
-        String query = String.format("SELECT COUNT(DISTINCT id_rent) as number FROM payment INNER JOIN rent " +
+        String query = String.format("SELECT id_rent FROM payment INNER JOIN rent " +
                 "ON payment.id_rent = rent.id WHERE username_customer = \'%s\' AND DATE(date_p) > \'%s\' GROUP BY id_rent HAVING count(*)>1", username, firstDay.toString());
+        ArrayList<Integer> result = new ArrayList<>();
         try {
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
-            return rs.getInt("number");
+            result.add(rs.getInt("id_rent"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return result;
     }
 
 
