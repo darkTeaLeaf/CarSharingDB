@@ -110,10 +110,12 @@ public class Queries {
     int query4(String username){
         LocalDate firstDay = LocalDate.now().minusDays(31);
 
-        String query = String.format("SELECT COUNT(id_rent) as number FROM payment INNER JOIN rent " +
-                "(ON payment.id_rent = rent.id) WHERE username = %s AND DATE(date_p) > \'%s\' GROUP BY id_rent HAVING count(*)>1)", username, firstDay.toString());
+        String query = String.format("SELECT COUNT(DISTINCT id_rent) as number FROM payment INNER JOIN rent " +
+                "ON payment.id_rent = rent.id WHERE username_customer = \'%s\' AND DATE(date_p) > \'%s\' GROUP BY id_rent HAVING count(*)>1", username, firstDay.toString());
         try {
-            return stmt.executeQuery(query).getInt("number");
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getInt("number");
         } catch (SQLException e) {
             e.printStackTrace();
         }
