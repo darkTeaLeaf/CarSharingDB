@@ -217,8 +217,10 @@ public class Queries {
 
     HashMap<Integer, String> query9(){
 
-        String min_day_query = "SELECT MIN(date) FROM is_repaired_in";
-        String query = String.format("SELECT wid, vendor_code, MAX(COUNT(*)/(DATEDIFF(NOW(), \'%s\')/7)) FROM used_parts GROUP BY wid, vendor_code", min_day_query);
+        String min_day_query = "(SELECT MIN(date_p) FROM is_repaired_in)";
+
+        String query = String.format("SELECT id_workshop, vendor_code_part, MAX(s/(DATEDIFF(NOW(), %s)/7))" +
+                "FROM (SELECT id_workshop, vendor_code_part, SUM(amount) as s FROM used_part JOIN is_repaired_in ON used_part.id_is_repaired_in = is_repaired_in.id GROUP BY id_workshop, vendor_code_part) A GROUP BY id_workshop", min_day_query);
 
         HashMap<Integer, String> result = new HashMap<>();
 
@@ -226,7 +228,7 @@ public class Queries {
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()){
-                result.put(rs.getInt("wid"), rs.getString("vendor_code"));
+                result.put(rs.getInt("id_workshop"), rs.getString("vendor_code_part"));
             }
             return result;
 
